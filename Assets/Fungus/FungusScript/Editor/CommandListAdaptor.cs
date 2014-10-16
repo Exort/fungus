@@ -337,8 +337,7 @@ namespace Fungus
 
 			// Build menu list
 			List<System.Type> menuTypes = EditorExtensions.FindDerivedTypes(typeof(Command)).ToList();
-
-			List<KeyValuePair<System.Type,CommandInfoAttribute>> filteredAttributes = GetFilteredCommandInfoAttribute(menuTypes);
+			List<KeyValuePair<System.Type, CommandInfoAttribute>> filteredAttributes = GetFilteredCommandInfoAttribute(menuTypes);
 
 			foreach(var keyPair in filteredAttributes)
 			{
@@ -357,9 +356,9 @@ namespace Fungus
 
 		List<KeyValuePair<System.Type,CommandInfoAttribute>> GetFilteredCommandInfoAttribute(List<System.Type> menuTypes)
 		{
-			Dictionary<string, KeyValuePair<System.Type,CommandInfoAttribute>> filteredAttributes = new Dictionary<string, KeyValuePair<Type, CommandInfoAttribute>>();
+			Dictionary<string, KeyValuePair<System.Type, CommandInfoAttribute>> filteredAttributes = new Dictionary<string, KeyValuePair<System.Type, CommandInfoAttribute>>();
 			
-			foreach(System.Type type in menuTypes)
+			foreach (System.Type type in menuTypes)
 			{
 				object[] attributes = type.GetCustomAttributes(false);
 				foreach (object obj in attributes)
@@ -367,16 +366,18 @@ namespace Fungus
 					CommandInfoAttribute infoAttr = obj as CommandInfoAttribute;
 					if (infoAttr != null)
 					{
-						string dictionnaryName = string.Format("{0}/{1}",infoAttr.Category,infoAttr.CommandName);
+						string dictionaryName = string.Format("{0}/{1}", infoAttr.Category, infoAttr.CommandName);
 						
-						int exisitingItemPriotiry = -1;
-						if(filteredAttributes.ContainsKey(dictionnaryName))
-							exisitingItemPriotiry = filteredAttributes[dictionnaryName].Value.Priority;
-						
-						if(infoAttr.Priority > exisitingItemPriotiry)
+						int existingItemPriority = -1;
+						if (filteredAttributes.ContainsKey(dictionaryName))
 						{
-							KeyValuePair<System.Type, CommandInfoAttribute> keyValuePair = new KeyValuePair<Type, CommandInfoAttribute>(type,infoAttr);
-							filteredAttributes[dictionnaryName] = keyValuePair;
+							existingItemPriority = filteredAttributes[dictionaryName].Value.Priority;
+						}
+						
+						if (infoAttr.Priority > existingItemPriority)
+						{
+							KeyValuePair<System.Type, CommandInfoAttribute> keyValuePair = new KeyValuePair<System.Type, CommandInfoAttribute>(type, infoAttr);
+							filteredAttributes[dictionaryName] = keyValuePair;
 						}
 					}
 				}
